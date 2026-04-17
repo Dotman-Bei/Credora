@@ -1,0 +1,19 @@
+{
+  "name": "credora-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@fhevm/solidity": "^0.7.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "dotenv": "^16.4.0",
+    "ethers": "^6.0.0",
+    "hardhat": "^2.22.0",
+    "hardhat-deploy": "^0.14.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@zama-fhe/oracle-solidity": "^0.2.0"
+  }
+}
