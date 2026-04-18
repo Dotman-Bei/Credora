@@ -13,19 +13,22 @@ type FulfillDemoLoanPayload = {
 };
 
 function getRpcUrl() {
-  if (process.env.NEXT_PUBLIC_RPC_URL) {
-    return process.env.NEXT_PUBLIC_RPC_URL;
+  const explicitRpc = process.env.NEXT_PUBLIC_RPC_URL || process.env.RPC_URL;
+  if (explicitRpc) {
+    return explicitRpc;
   }
 
-  if (process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
-    return `https://eth-sepolia.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`;
+  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY || process.env.ALCHEMY_API_KEY;
+  if (alchemyKey) {
+    return `https://eth-sepolia.g.alchemy.com/v2/${alchemyKey}`;
   }
 
-  if (process.env.INFURA_API_KEY) {
-    return `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
+  const infuraKey = process.env.INFURA_API_KEY || process.env.NEXT_PUBLIC_INFURA_API_KEY;
+  if (infuraKey) {
+    return `https://sepolia.infura.io/v3/${infuraKey}`;
   }
 
-  return null;
+  return sepolia.rpcUrls.default.http[0] || null;
 }
 
 function getRelayerAccount() {
@@ -70,7 +73,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "Missing RPC configuration. Set NEXT_PUBLIC_RPC_URL, NEXT_PUBLIC_ALCHEMY_API_KEY, or INFURA_API_KEY.",
+            "Missing RPC configuration. Set RPC_URL or NEXT_PUBLIC_RPC_URL, or provide ALCHEMY_API_KEY/NEXT_PUBLIC_ALCHEMY_API_KEY, or INFURA_API_KEY/NEXT_PUBLIC_INFURA_API_KEY.",
         },
         { status: 500 }
       );
