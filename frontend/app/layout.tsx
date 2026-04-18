@@ -1,29 +1,21 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Inter, Space_Grotesk, Playfair_Display } from "next/font/google";
+import { JetBrains_Mono, Manrope, Source_Sans_3 } from "next/font/google";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { ClientProviders } from "./client-providers";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  weight: ["500", "600", "700"],
+const manrope = Manrope({
+  weight: ["500", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-display-face",
   display: "swap",
 });
 
-const inter = Inter({
+const sourceSans3 = Source_Sans_3({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-body-face",
-  display: "swap",
-});
-
-const playfairDisplay = Playfair_Display({
-  weight: ["700", "800", "900"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-  variable: "--font-hero-face",
   display: "swap",
 });
 
@@ -50,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}>
+      <body className={`${manrope.variable} ${sourceSans3.variable} ${jetbrainsMono.variable}`}>
         <ClientProviders>
           <div className="credora-app-shell">
             <Navbar />
