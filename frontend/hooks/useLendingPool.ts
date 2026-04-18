@@ -18,6 +18,16 @@ import {
 } from "../contracts/credoraAbis";
 
 const NETWORK: NetworkName = (process.env.NEXT_PUBLIC_NETWORK as NetworkName) || "sepolia";
+
+function isUserRejection(error: unknown) {
+  const msg = (error instanceof Error ? error.message : String(error)).toLowerCase();
+  return (
+    msg.includes("user rejected") ||
+    msg.includes("user denied") ||
+    msg.includes("rejected the request") ||
+    msg.includes("action_rejected")
+  );
+}
 const POOL_ADDRESS = DEPLOYED_ADDRESSES[NETWORK].LendingPool as `0x${string}`;
 
 export interface LoanDetails {
@@ -232,7 +242,11 @@ export function useLendingPool() {
         await refetchDetails();
         return hash;
       } catch (err) {
-        setRequestError(err instanceof Error ? err.message : "Failed to request loan");
+        if (isUserRejection(err)) {
+          setRequestError("Transaction cancelled.");
+        } else {
+          setRequestError(err instanceof Error ? err.message : "Failed to request loan");
+        }
         return null;
       } finally {
         setIsRequesting(false);
@@ -271,7 +285,7 @@ export function useLendingPool() {
 
       return hash;
     } catch (err) {
-      setRepayError(err instanceof Error ? err.message : "Failed to repay loan");
+      setRepayError(isUserRejection(err) ? "Transaction cancelled." : (err instanceof Error ? err.message : "Failed to repay loan"));
       setIsRepaying(false);
       return null;
     }

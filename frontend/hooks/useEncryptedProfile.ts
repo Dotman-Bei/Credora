@@ -21,6 +21,16 @@ function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : "Failed to submit profile";
 }
 
+function isUserRejectionError(error: unknown) {
+  const message = getErrorMessage(error).toLowerCase();
+  return (
+    message.includes("user rejected") ||
+    message.includes("user denied") ||
+    message.includes("rejected the request") ||
+    message.includes("action_rejected")
+  );
+}
+
 function isInsufficientFundsError(error: unknown) {
   const message = getErrorMessage(error).toLowerCase();
   return (
@@ -194,6 +204,10 @@ export function useEncryptedProfile() {
           }
         }
       } catch (err) {
+        if (isUserRejectionError(err)) {
+          setSubmitError("Transaction cancelled.");
+          return;
+        }
         const message = await resolveInsufficientGasMessage(err, submitConfig);
         setSubmitError(message);
       } finally {
