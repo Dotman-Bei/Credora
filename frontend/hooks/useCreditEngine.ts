@@ -13,6 +13,16 @@ import { CREDIT_ENGINE_ABI, DEPLOYED_ADDRESSES, type NetworkName } from "../cont
 const NETWORK: NetworkName = (process.env.NEXT_PUBLIC_NETWORK as NetworkName) || "sepolia";
 const ENGINE_ADDRESS = DEPLOYED_ADDRESSES[NETWORK].CreditEngine as `0x${string}`;
 
+function isUserRejection(error: unknown) {
+  const msg = (error instanceof Error ? error.message : String(error)).toLowerCase();
+  return (
+    msg.includes("user rejected") ||
+    msg.includes("user denied") ||
+    msg.includes("rejected the request") ||
+    msg.includes("action_rejected")
+  );
+}
+
 const INCOME_BONUSES = [
   { threshold: 2_000, points: 40 },
   { threshold: 4_000, points: 50 },
@@ -163,7 +173,7 @@ export function useCreditEngine() {
       });
       setComputeTxHash(hash);
     } catch (err) {
-      setComputeError(err instanceof Error ? err.message : "Failed to compute score");
+      setComputeError(isUserRejection(err) ? "Transaction cancelled." : (err instanceof Error ? err.message : "Failed to compute score"));
     } finally {
       setIsComputing(false);
     }
@@ -188,7 +198,7 @@ export function useCreditEngine() {
       });
       setDecryptTxHash(hash);
     } catch (err) {
-      setDecryptError(err instanceof Error ? err.message : "Failed to decrypt score");
+      setDecryptError(isUserRejection(err) ? "Transaction cancelled." : (err instanceof Error ? err.message : "Failed to decrypt score"));
     } finally {
       setIsDecrypting(false);
     }
