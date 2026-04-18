@@ -27,14 +27,6 @@ const playfairDisplay = Playfair_Display({
   display: "swap",
 });
 
-const playfairDisplay = Playfair_Display({
-  weight: ["700", "800", "900"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-  variable: "--font-hero-face",
-  display: "swap",
-});
-
 const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
   subsets: ["latin"],
