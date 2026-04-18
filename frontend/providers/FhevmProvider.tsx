@@ -51,7 +51,7 @@ export function FhevmProvider({ children }: { children: React.ReactNode }) {
           kmsContractAddress: KMS_ADDRESS,
           aclContractAddress: ACL_ADDRESS,
           chainId: SEPOLIA_CHAIN_ID,
-          networkUrl: "https://sepolia.infura.io/v3/your-key",
+          networkUrl: process.env.NEXT_PUBLIC_RPC_URL || `https://sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY || ""}`,
           gatewayUrl: GATEWAY_URL,
           network: (window as any).ethereum,
         });

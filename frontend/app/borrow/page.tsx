@@ -346,10 +346,11 @@ export default function BorrowPage() {
                   </div>
                 </div>
 
-                {repayError && <div className="credora-alert credora-alert--error">{repayError}</div>}
+                {repayError && <div className="credora-alert credora-alert--error" style={{ marginTop: "16px" }}>{repayError}</div>}
 
                 <button
                   className="credora-btn credora-btn--primary credora-btn--full"
+                  style={{ marginTop: "16px" }}
                   disabled={isPending || !repaymentEth}
                   onClick={handleRepay}
                 >

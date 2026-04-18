@@ -889,8 +889,8 @@ code {
 .credora-home-hero__title {
   max-width: 760px;
   margin-bottom: 18px;
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 7vw, 6.4rem);
+  font-family: var(--font-hero-face), "Georgia", serif;
+  font-size: clamp(1.75rem, 3.5vw, 3.2rem);
   line-height: 0.94;
   letter-spacing: -0.06em;
 }
